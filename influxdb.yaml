@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+  labels:
+    name: influxdb
+spec:
+  type: NodePort
+  ports:
+  - port: 8086
+    name: http-api
+    nodePort: 31070
+  selector:
+    name: influxdb
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: influxdb
+  labels:
+    name: influxdb
+spec:
+  replicas: 1
+  selector:
+    name: influxdb
+  template:
+    metadata:
+      labels:
+        name: influxdb
+    spec:
+      containers:
+      - name: influxdb
+        image: influxdb
+        ports:
+        - containerPort: 8086
+        volumeMounts:
+        - mountPath: /var/lib/influxdb
+          name: data
+      volumes:
+      - name: data
+        emptyDir: {}
