@@ -46,7 +46,7 @@ spec:
           - name: KLS_JMS_QUEUE
             value: kieker
           - name: KLS_INFLUXDB_URL
-            value: 'http://monitoring-influxdb.kube-system'
+            value: 'http://influxdb'
           - name: KLS_INFLUXDB_PORT
             value: '8086'
           - name: KLS_INFLUXDB_USERNAME
