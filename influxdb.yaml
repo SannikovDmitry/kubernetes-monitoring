@@ -8,8 +8,11 @@ spec:
   type: NodePort
   ports:
   - port: 8086
-    name: http-api
+    name: http
     nodePort: 31070
+  - port: 2003
+    name: graphite
+    nodePort: 31071
   selector:
     name: influxdb
 ---
@@ -33,6 +36,10 @@ spec:
         image: influxdb
         ports:
         - containerPort: 8086
+        - containerPort: 2003
+        env:
+          - name: INFLUXDB_GRAPHITE_ENABLED
+            value: "true"
         volumeMounts:
         - mountPath: /var/lib/influxdb
           name: data
