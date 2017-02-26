@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: appdash
+  labels:
+    name: appdash
+spec:
+  type: NodePort
+  ports:
+  - port: 7700
+    name: web
+    nodePort: 31080
+  - port: 7701
+    name: collector
+    nodePort: 31081
+  selector:
+    name: appdash
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: appdash
+  labels:
+    name: appdash
+spec:
+  replicas: 1
+  selector:
+    name: appdash
+  template:
+    metadata:
+      labels:
+        name: appdash
+    spec:
+      containers:
+      - name: appdash
+        image: solher/appdash
+        ports:
+        - containerPort: 7700
+        - containerPort: 7701
+        command: ["appdash", "serve", "--url=http://10.0.10.152:31080", "--collector=:7701"]
