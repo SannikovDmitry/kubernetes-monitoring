@@ -33,18 +33,22 @@ spec:
     spec:
       containers:
       - name: kls
-        image: teeratpitakrat/kieker-logging-server:0.0.5
+        image: kieker/kieker-logging-server:0.1
         imagePullPolicy: Always
         ports:
         - containerPort: 22
         - containerPort: 8080
         env:
+          - name: KLS_LOGGER_ENABLED
+            value: "false"
           - name: KLS_JMS_HOST
             value: activemq
           - name: KLS_JMS_PORT
             value: '61616'
           - name: KLS_JMS_QUEUE
             value: kieker
+          - name: KLS_INFLUXDB_ENABLED
+            value: "true"
           - name: KLS_INFLUXDB_URL
             value: 'http://influxdb'
           - name: KLS_INFLUXDB_PORT
